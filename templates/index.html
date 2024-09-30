@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckDB Flask App</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>DuckDB Flask App</h1>
+    
+    <h2>Customer Sales</h2>
+    <table>
+        <tr>
+            <th>Customer ID</th>
+            <th>Name</th>
+            <th>Total Sales</th>
+            <th>Sales Rank</th>
+        </tr>
+        {% for customer in customer_sales %}
+        <tr>
+            <td>{{ customer[0] }}</td>
+            <td>{{ customer[1] }}</td>
+            <td>${{ "%.2f"|format(customer[2]) }}</td>
+            <td>{{ customer[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Top Selling Products</h2>
+    <table>
+        <tr>
+            <th>Product Name</th>
+            <th>Total Quantity</th>
+            <th>Total Revenue</th>
+            <th>Revenue Rank</th>
+        </tr>
+        {% for product in top_products %}
+        <tr>
+            <td>{{ product[0] }}</td>
+            <td>{{ product[1] }}</td>
+            <td>${{ "%.2f"|format(product[2]) }}</td>
+            <td>{{ product[3] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    
+    <h2>Recent Orders</h2>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer Name</th>
+            <th>Product Name</th>
+            <th>Quantity</th>
+            <th>Order Date</th>
+            <th>Total Price</th>
+        </tr>
+        {% for order in recent_orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>{{ order[2] }}</td>
+            <td>{{ order[3] }}</td>
+            <td>{{ order[4] }}</td>
+            <td>${{ "%.2f"|format(order[5]) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
