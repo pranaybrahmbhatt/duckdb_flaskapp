@@ -3,82 +3,181 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DuckDB Flask App</title>
+    <title>E-commerce Analytics Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 20px;
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --background-color: #f0f3f6;
+            --text-color: #34495e;
+            --card-bg-color: #ffffff;
         }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        th {
-            background-color: #f2f2f2;
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        nav {
+            background-color: #2980b9;
+            padding: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style-type: none;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+        }
+
+        .card-content {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .card-content ol, .card-content ul {
+            font-size: 1rem;
+            color: var(--text-color);
+            margin-left: 20px;
+        }
+
+        .card-content li {
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            header h1 {
+                font-size: 2rem;
+            }
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+            nav ul li {
+                margin: 5px 0;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>DuckDB Flask App</h1>
-    
-    <h2>Customer Sales</h2>
-    <table>
-        <tr>
-            <th>Customer ID</th>
-            <th>Name</th>
-            <th>Total Sales</th>
-            <th>Sales Rank</th>
-        </tr>
-        {% for customer in customer_sales %}
-        <tr>
-            <td>{{ customer[0] }}</td>
-            <td>{{ customer[1] }}</td>
-            <td>${{ "%.2f"|format(customer[2]) }}</td>
-            <td>{{ customer[3] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-    <h2>Top Selling Products</h2>
-    <table>
-        <tr>
-            <th>Product Name</th>
-            <th>Total Quantity</th>
-            <th>Total Revenue</th>
-            <th>Revenue Rank</th>
-        </tr>
-        {% for product in top_products %}
-        <tr>
-            <td>{{ product[0] }}</td>
-            <td>{{ product[1] }}</td>
-            <td>${{ "%.2f"|format(product[2]) }}</td>
-            <td>{{ product[3] }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    
-    <h2>Recent Orders</h2>
-    <table>
-        <tr>
-            <th>Order ID</th>
-            <th>Customer Name</th>
-            <th>Product Name</th>
-            <th>Quantity</th>
-            <th>Order Date</th>
-            <th>Total Price</th>
-        </tr>
-        {% for order in recent_orders %}
-        <tr>
-            <td>{{ order[0] }}</td>
-            <td>{{ order[1] }}</td>
-            <td>{{ order[2] }}</td>
-            <td>{{ order[3] }}</td>
-            <td>{{ order[4] }}</td>
-            <td>${{ "%.2f"|format(order[5]) }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <header>
+        <h1>E-commerce Analytics Dashboard</h1>
+        <p>Real-time insights for your business</p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#total-sales">Total Sales</a></li>
+            <li><a href="#top-customers">Top Customers</a></li>
+            <li><a href="#recent-sales">Recent Sales</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="dashboard">
+            <div class="card" id="total-sales">
+                <h2>Total Sales</h2>
+                <div class="card-content">$123,456</div>
+            </div>
+            <div class="card" id="top-customers">
+                <h2>Top Customers</h2>
+                <div class="card-content">
+                    <ol>
+                        <li>John Doe - $5,000</li>
+                        <li>Jane Smith - $4,500</li>
+                        <li>Bob Johnson - $3,800</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card" id="recent-sales">
+                <h2>Recent Sales</h2>
+                <div class="card-content">
+                    <ul>
+                        <li>Product A - $50 </li>
+                        <li>Product B - $75 </li>
+                        <li>Product C - $100</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
