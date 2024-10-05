@@ -1,0 +1,5 @@
+<ol>
+    {% for customer in customers %}
+        <li>{{ customer[0] }} - ${{ "{:.2f}".format(customer[1]) }}</li>
+    {% endfor %}
+</ol>

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-commerce Analytics Dashboard</title>
+    <title>Dynamic E-commerce Analytics Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
     <style>
         :root {
             --primary-color: #3498db;
@@ -122,6 +123,58 @@
             margin-bottom: 5px;
         }
 
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        #add-data-response {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
         @media (max-width: 768px) {
             .dashboard {
                 grid-template-columns: 1fr;
@@ -149,35 +202,48 @@
             <li><a href="#total-sales">Total Sales</a></li>
             <li><a href="#top-customers">Top Customers</a></li>
             <li><a href="#recent-sales">Recent Sales</a></li>
+            <li><a href="#add-data">Add Data</a></li>
         </ul>
     </nav>
     <div class="container">
         <div class="dashboard">
             <div class="card" id="total-sales">
                 <h2>Total Sales</h2>
-                <div class="card-content">$123,456</div>
+                <div class="card-content" hx-get="/get-total-sales" hx-trigger="load">
+                    Loading...
+                </div>
             </div>
             <div class="card" id="top-customers">
                 <h2>Top Customers</h2>
-                <div class="card-content">
-                    <ol>
-                        <li>John Doe - $5,000</li>
-                        <li>Jane Smith - $4,500</li>
-                        <li>Bob Johnson - $3,800</li>
-                    </ol>
+                <div class="card-content" hx-get="/get-top-customers" hx-trigger="load">
+                    Loading...
                 </div>
             </div>
             <div class="card" id="recent-sales">
                 <h2>Recent Sales</h2>
-                <div class="card-content">
-                    <ul>
-                        <li>Product A - $50 </li>
-                        <li>Product B - $75 </li>
-                        <li>Product C - $100</li>
-                    </ul>
+                <div class="card-content" hx-get="/get-recent-sales" hx-trigger="load">
+                    Loading...
                 </div>
+            </div>
+            <div class="card" id="add-data">
+                <h2>Add New Data</h2>
+                <form hx-post="/add-data" hx-target="#add-data-response">
+                    <div class="form-group">
+                        <label for="data-type">Data Type:</label>
+                        <select id="data-type" name="data_type" hx-get="/get-form-fields" hx-target="#dynamic-fields" hx-swap="innerHTML">
+                            <option value="">Select type...</option>
+                            <option value="customer">Customer</option>
+                            <option value="product">Product</option>
+                            <option value="order">Order</option>
+                        </select>
+                    </div>
+                    <div id="dynamic-fields"></div>
+                    <button type="submit" class="btn">Add Data</button>
+                </form>
+                <div id="add-data-response"></div>
             </div>
         </div>
     </div>
 </body>
 </html>
+

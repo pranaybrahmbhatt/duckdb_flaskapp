@@ -1,0 +1,5 @@
+<ul>
+    {% for sale in sales %}
+        <li>{{ sale[0] }} - {{ sale[1] }} units at ${{ "{:.2f}".format(sale[2]) }} ({{ sale[3] }})</li>
+    {% endfor %}
+</ul>
